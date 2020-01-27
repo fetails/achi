@@ -63,7 +63,7 @@
             void main()
             {
                 vec4 ortho_calculated = achi_ortho * vec4(mousecoords.xy, 1, 1);
-                float intensity = 0.8 * length(ortho_calculated.xy - achi_coords.xy);
+                float intensity = 0.8 * length(ortho_calculated.xy - achi_coords.xy) / 0.4;
                 color = intensity * vec4(0.02, 0.02, 0.02, 1);
             }
             `;

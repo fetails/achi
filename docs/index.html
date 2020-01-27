@@ -55,15 +55,14 @@
             let s = new achishaders(vs, fs);
 
             let o_matrix = new Float32Array(16),
-                o_rotation = new Float32Array(16),
-                identity = new Float32Array(16);
+                o_rotation = new Float32Array(16);
 
             a.setup();
 
             let delta = 0.0;
 
-            glMatrix.mat4.identity(identity);
             glMatrix.mat4.ortho(o_matrix, 0, a.w, a.h, 0, -1, 1);
+            let identity = glMatrix.mat4.create();
 
             let angle = 0;
             let speed = Math.floor(Math.random() * 10 + 0);

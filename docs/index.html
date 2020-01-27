@@ -1,1 +1,84 @@
-<h1>Achi</h1>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Achi</title>
+        <meta name="author" content="viker" />
+    </head>
+    <body>
+        <style type="text/css">
+            body, html {
+                padding:0;
+                margin:0;
+            }
+            canvas {
+                width: 100vw;
+                height: 100vh;
+                display:block;
+            }
+        </style>
+        <canvas id="webglcanvas"></canvas>
+        <script src="js/gl-matrix.js"></script>
+        <script src="js/vectors.js"></script>
+        <script src="js/main.js"></script>
+        <script>
+            const vs = `#version 300 es
+
+            layout( location = 0 ) in vec3 position;
+            layout( location = 1 ) in vec4 color;
+
+            uniform mat4 orthographic;
+            uniform mat4 rotation;
+
+            out vec4 oc;
+
+            void main()
+            {
+                gl_Position = rotation * orthographic * vec4(position, 1);
+                oc = color;
+            }
+            `;
+
+            const fs = `#version 300 es
+
+            precision mediump float;
+
+            out vec4 color;
+
+            in vec4 oc;
+            
+            void main()
+            {
+                color = oc;    
+            }
+            `;
+            let a = new achi("#webglcanvas");
+            let s = new achishaders(vs, fs);
+
+            let o_matrix = new Float32Array(16),
+                o_rotation = new Float32Array(16),
+                identity = new Float32Array(16);
+
+            a.setup();
+
+            let delta = 0.0;
+
+            glMatrix.mat4.identity(identity);
+            glMatrix.mat4.ortho(o_matrix, 0, a.w, a.h, 0, -1, 1);
+
+            let angle = 0;
+            loop = function()
+            {
+                angle = performance.now() / 1000 / 12 * Math.PI;
+                glMatrix.mat4.rotate(o_rotation, identity, angle, [1, 1, 0]);
+
+                a.clear();
+                s.bind();
+                s.ortho(o_matrix);
+                s.um4("rotation", o_rotation);
+                a.render();
+                a.nf(loop); // nf = new frame
+            }
+            loop();
+        </script>
+    </body>
+</html>

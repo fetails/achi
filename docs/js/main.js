@@ -166,8 +166,8 @@ class achi
             3, 2, 1
         ];
 
-        let u = color32(132, 31, 35);
-
+        //let u = color32(132, 31, 35);
+        let u = color32(Math.floor(Math.random() * 255 + 0), Math.floor(Math.random() * 255 + 0), Math.floor(Math.random() * 255 + 0))
         this.o = [
             u.r - 0.2, u.g - 0.2, u.b - 0.2, 1.0,
             u.r, u.g, u.b, 1.0,

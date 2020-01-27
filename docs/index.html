@@ -66,10 +66,11 @@
             glMatrix.mat4.ortho(o_matrix, 0, a.w, a.h, 0, -1, 1);
 
             let angle = 0;
+            let speed = Math.floor(Math.random() * 10 + 1);
             loop = function()
             {
-                angle = performance.now() / 1000 / 12 * Math.PI;
-                glMatrix.mat4.rotate(o_rotation, identity, angle, [1, 1, 0]);
+                angle = performance.now() / 1000 / speed * Math.PI;
+                glMatrix.mat4.rotate(o_rotation, identity, angle, [1, 1, 1]);
 
                 a.clear();
                 s.bind();

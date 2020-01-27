@@ -66,7 +66,7 @@
             glMatrix.mat4.ortho(o_matrix, 0, a.w, a.h, 0, -1, 1);
 
             let angle = 0;
-            let speed = Math.floor(Math.random() * 10 + 1);
+            let speed = Math.floor(Math.random() * 10 + 0);
             loop = function()
             {
                 angle = performance.now() / 1000 / speed * Math.PI;

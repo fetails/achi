@@ -1,9 +1,111 @@
 <!DOCTYPE html>
 <html>
     <head>
-
+        <link href="https://fonts.googleapis.com/css?family=Lato:300,400&display=swap" rel="stylesheet">
+        <title>Achi &bull; Engine</title>
+        <script src="vendor/jquery.min.js"></script>
+        <script src="vendor/gl-matrix.js"></script>
+        <script src="achi.js"></script>
     </head>
     <body>
-        <h1>Achi - Coming soon!</h1>
+        <style type="text/css">
+            body, html {
+                margin:0;
+                padding:0;
+            }
+
+            h1, h2, h3, h4, h5
+            {
+                font-weight:100;
+                color:rgb(228, 228, 228);
+            }
+
+            #achicanvas
+            {
+                display:block;
+                width: 100vw;
+                height: 100vh;
+            }
+        </style>
+
+        <canvas id="achicanvas"></canvas>
+
+        <script type="text/javascript">
+        
+
+            const vs = `#version 300 es
+
+            in vec3 coords;
+
+            out vec3 achi_coords;
+            out mat4 achi_ortho;
+
+            uniform mat4 ortho_graphic;
+
+            void main()
+            {
+                gl_Position = ortho_graphic * vec4(coords, 1);
+                achi_coords = gl_Position.xyz;
+                achi_ortho = ortho_graphic;
+            }
+            `;
+
+            const fs = `#version 300 es
+            
+            precision mediump float;
+
+            out vec4 color;
+            
+            in vec3 achi_coords;
+            in mat4 achi_ortho;            
+            uniform vec2 mousecoords;
+
+            void main()
+            {
+                vec4 ortho_calculated = achi_ortho * vec4(mousecoords.xy, 1, 1);
+                float intensity = 0.8 * length(ortho_calculated.xy - achi_coords.xy);
+                color = intensity * vec4(0.02, 0.02, 0.02, 1);
+            }
+            `;
+           let engine = new AchiEngine("#achicanvas");
+           let shader = new AchiShader(vs, fs);
+           let w = engine.w;
+           let h = engine.h;
+           let x = 0;
+           let y = 0;
+           
+           engine.quad2d(x, y, w, h);
+           let mat = new Float32Array(16);
+           let mousecoords = new Float32Array(2);
+
+           let mpos = engine.mousecoords();
+
+           let update_mouse_coords = function(name)
+           {
+                mousecoords[0] = engine.mx;
+                mousecoords[1] = engine.my;
+                shader.uniform_vec2(name, mousecoords);
+           }
+
+           let update_ortho = function(name, width, height)
+           {
+                glMatrix.mat4.ortho(mat, 0, width, height, 0, -1, 1);
+                shader.uniform_mat4(name, mat);
+           };
+           engine.setup();
+           
+           var GameLoop = function()
+           {
+            engine.clear();
+            shader.set_bind();
+            update_ortho("ortho_graphic", engine.w, engine.h);
+            update_mouse_coords("mousecoords");
+            engine.render();
+
+            requestAnimationFrame(GameLoop);
+           };
+
+           GameLoop();
+        </script>
     </body>
 </html>

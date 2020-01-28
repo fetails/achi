@@ -57,19 +57,23 @@
             let o_matrix = new Float32Array(16),
                 o_rotation = new Float32Array(16);
 
-            a.setup();
+            for(var i = 0; i < 100; i++)
+            {
+                a.addData();
 
+            }
+            a.setup();
             let delta = 0.0;
 
             glMatrix.mat4.ortho(o_matrix, 0, a.w, a.h, 0, -1, 1);
             let identity = glMatrix.mat4.create();
 
             let angle = 0;
-            let speed = Math.floor(Math.random() * 10 + 0);
+            let speed = 0.02;
             loop = function()
             {
-                angle = performance.now() / 1000 / speed * Math.PI;
-                glMatrix.mat4.rotate(o_rotation, identity, angle, [1, 0, 1]);
+                angle = performance.now() / 100 * speed * Math.PI;
+                glMatrix.mat4.rotate(o_rotation, identity, angle, [0, 0, 1]);
                 a.clear();
                 s.bind();
                 s.ortho(o_matrix);

@@ -104,6 +104,7 @@ class achi
         this.resize();
 
         this.cl = color32(25, 25, 25, 255);
+        this.s = [];
     }
     resize()
     {
@@ -157,27 +158,55 @@ class achi
 
     setup()
     {
-        let sc = 250;
-        let sc_c = sc / 2;
-        this.s = this.translateSize(Math.floor(Math.random() * this.w), Math.floor(Math.random() * this.h), 100, 100);
+        this.s.push(this.translateSize(Math.floor(Math.random() * this.w), Math.floor(Math.random() * this.h), 100, 100));
+        this.s.push(this.translateSize(Math.floor(Math.random() * this.w), Math.floor(Math.random() * this.h), 100, 100));
+        this.s.push(this.translateSize(Math.floor(Math.random() * this.w), Math.floor(Math.random() * this.h), 100, 100));
+        this.s.push(this.translateSize(Math.floor(Math.random() * this.w), Math.floor(Math.random() * this.h), 100, 100));
 
         this.t = [
             0, 1, 2,
-            3, 2, 1
+            3, 2, 1,
+
+            4, 5, 6,
+            7, 6, 5,
+
+            8, 9, 10,
+            11, 10, 9,
+
+            12, 13, 14,
+            15, 14, 13
         ];
 
         //let u = color32(132, 31, 35);
         let u = color32(Math.floor(Math.random() * 255 + 0), Math.floor(Math.random() * 255 + 0), Math.floor(Math.random() * 255 + 0))
+        let u2 = color32(Math.floor(Math.random() * 255 + 0), Math.floor(Math.random() * 255 + 0), Math.floor(Math.random() * 255 + 0))
+        let u3 = color32(Math.floor(Math.random() * 255 + 0), Math.floor(Math.random() * 255 + 0), Math.floor(Math.random() * 255 + 0))
+        let u4 = color32(Math.floor(Math.random() * 255 + 0), Math.floor(Math.random() * 255 + 0), Math.floor(Math.random() * 255 + 0))
         this.o = [
             u.r - 0.2, u.g - 0.2, u.b - 0.2, 1.0,
             u.r, u.g, u.b, 1.0,
             u.r - 0.2, u.g - 0.2, u.b - 0.2, 1.0,
-            u.r, u.g, u.b, 1.0
+            u.r, u.g, u.b, 1.0,
+
+            u2.r - 0.2, u2.g - 0.2, u2.b - 0.2, 1.0,
+            u2.r, u2.g, u2.b, 1.0,
+            u2.r - 0.2, u2.g - 0.2, u2.b - 0.2, 1.0,
+            u2.r, u2.g, u2.b, 1.0,
+
+            u3.r - 0.2, u3.g - 0.2, u3.b - 0.2, 1.0,
+            u3.r, u3.g, u3.b, 1.0,
+            u3.r - 0.2, u3.g - 0.2, u3.b - 0.2, 1.0,
+            u3.r, u3.g, u3.b, 1.0,
+
+            u4.r - 0.2, u4.g - 0.2, u4.b - 0.2, 1.0,
+            u4.r, u4.g, u4.b, 1.0,
+            u4.r - 0.2, u4.g - 0.2, u4.b - 0.2, 1.0,
+            u4.r, u4.g, u4.b, 1.0
         ];
 
         this.v = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this.v);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.s), gl.STATIC_DRAW);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([].concat.apply([], this.s)), gl.STATIC_DRAW);
         gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0);
         gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
